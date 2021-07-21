@@ -117,10 +117,12 @@ public class tictactoe {
                 int r = user_coord.nextInt();
                 int c = user_coord.nextInt();
                 
-                if (board[r][c].equalsIgnoreCase("X") ||  board[r][c].equalsIgnoreCase("O")) {
-                    System.out.println("This cell is occupied! Choose another one!");
-                } else if ((r > 3 || r < 1) || (c > 3 || c < 1)) {
+                if ((r > 3 || r < 1) || (c > 3 || c < 1)) {
                     System.out.println("Coordinates should be from 1 to 3!");
+                    continue;
+                } else if (board[r][c].equalsIgnoreCase("X") ||  board[r][c].equalsIgnoreCase("O")) {
+                    System.out.println("This cell is occupied! Choose another one!");
+                    continue;
                 } else {
                     board[r][c] = "X";
                 }
