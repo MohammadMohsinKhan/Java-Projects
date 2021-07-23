@@ -1,5 +1,4 @@
 import java.util.*;
-// fix how the board is printed
 
 public class tictactoe {
     static void easyMove (String matrix[][], String piece) {
