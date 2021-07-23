@@ -1,16 +1,44 @@
 import java.util.*;
+// fix how the board is printed
+
 public class tictactoe {
-    static void easyMove (String matrix[][]) {
+    static void easyMove (String matrix[][], String piece) {
         while (true) {
             Random random = new Random();
             int row = random.nextInt(3) + 1;
             int col = random.nextInt(3) + 1;
             if (matrix[row][col] == " ") {
-                matrix[row][col] = "O";
+                matrix[row][col] = piece;
                 break;
             }
         }
+        displayBoard(matrix);
     }
+
+    static void playerMove (String matrix[][], String piece) {
+        while (true) {
+            System.out.print("Enter the coordinates: ");
+            Scanner user_coord = new Scanner(System.in);
+            try {
+                int r = user_coord.nextInt();
+                int c = user_coord.nextInt();
+                
+                if ((r > 3 || r < 1) || (c > 3 || c < 1)) {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                } else if (matrix[r][c].equalsIgnoreCase("X") ||  matrix[r][c].equalsIgnoreCase("O")) {
+                    System.out.println("This cell is occupied! Choose another one!");
+                } else {
+                    matrix[r][c] = piece;
+                    displayBoard(matrix);
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("You should enter numbers!");
+            }
+        }
+        
+    }
+
     static boolean fillCheck(String matrix[][]) {
         int emptyCount = 0;
         for (int i = 1; i < matrix.length - 1;i++) {
@@ -29,12 +57,12 @@ public class tictactoe {
 
         for (int i = 1; i < matrix.length - 1; i++) {
             if (matrix[i][1].equalsIgnoreCase("X") && matrix[i][2].equalsIgnoreCase("X") && matrix[i][3].equalsIgnoreCase("X")) {
-                System.out.print("X wins");
+                System.out.println("X wins");
                 X = true;
                 return true;
                 
             } else if (matrix[i][1].equalsIgnoreCase("O") && matrix[i][2].equalsIgnoreCase("O") && matrix[i][3].equalsIgnoreCase("O")) {
-                System.out.print("O wins");
+                System.out.println("O wins");
                 O = true;
                 return true;
                 
@@ -42,12 +70,12 @@ public class tictactoe {
 
             if (!X && !O) {
                 if (matrix[1][i].equalsIgnoreCase("X") && matrix[2][i].equalsIgnoreCase("X") && matrix[3][i].equalsIgnoreCase("X")) {
-                    System.out.print("X wins");
+                    System.out.println("X wins");
                     X = true;
                     return true;
                     
                 } else if (matrix[1][i].equalsIgnoreCase("O") && matrix[2][i].equalsIgnoreCase("O") && matrix[3][i].equalsIgnoreCase("O")) {
-                    System.out.print("O wins");
+                    System.out.println("O wins");
                     O = true;
                     return true;
                     
@@ -57,11 +85,11 @@ public class tictactoe {
 
         if (!X && !O) {
                 if (matrix[1][1].equalsIgnoreCase("X") && matrix[2][2].equalsIgnoreCase("X") && matrix[3][3].equalsIgnoreCase("X")) {
-                    System.out.print("X wins");
+                    System.out.println("X wins");
                     X = true;
                     return true;
                 } else if (matrix[1][1].equalsIgnoreCase("O") && matrix[2][2].equalsIgnoreCase("O") && matrix[3][3].equalsIgnoreCase("O")) {
-                    System.out.print("O wins");
+                    System.out.println("O wins");
                     O = true;
                     return true;
                 }
@@ -69,11 +97,11 @@ public class tictactoe {
 
         if (!X && !O) {
             if (matrix[1][3].equalsIgnoreCase("X") && matrix[2][2].equalsIgnoreCase("X") && matrix[3][1].equalsIgnoreCase("X")) {
-                System.out.print("X wins");
+                System.out.println("X wins");
                 X = true;
                 return true;
             } else if (matrix[1][3].equalsIgnoreCase("O") && matrix[2][2].equalsIgnoreCase("O") && matrix[3][1].equalsIgnoreCase("O")) {
-                System.out.print("O wins");
+                System.out.println("O wins");
                 O = true;
                 return true;
             }
@@ -105,48 +133,73 @@ public class tictactoe {
             {"-","-","-","-","-","-","-","-","-"}
         };
         String botMode = "easy";
-        
-        int ind = 0;
-        
-        displayBoard(board);
 
         while (true) {
-            System.out.print("Enter the coordinates: ");
-            Scanner user_coord = new Scanner(System.in);
-            try {
-                int r = user_coord.nextInt();
-                int c = user_coord.nextInt();
-                
-                if ((r > 3 || r < 1) || (c > 3 || c < 1)) {
-                    System.out.println("Coordinates should be from 1 to 3!");
-                    continue;
-                } else if (board[r][c].equalsIgnoreCase("X") ||  board[r][c].equalsIgnoreCase("O")) {
-                    System.out.println("This cell is occupied! Choose another one!");
-                    continue;
-                } else {
-                    board[r][c] = "X";
-                }
+            System.out.print("Input command: ");
+            Scanner userInput = new Scanner(System.in);
+            String[] parameter = userInput.nextLine().split(" ");
+
+            if (parameter[0].equalsIgnoreCase("exit")) {
+                break;
+            }
+
+            if (parameter.length != 3) {
+                System.out.println("Bad parameters!");
+                continue;
+            }
+
+            if (parameter[0].equalsIgnoreCase("start") && (parameter[1].equalsIgnoreCase("user") || parameter[1].equalsIgnoreCase("easy") && (parameter[2].equalsIgnoreCase("user") || parameter[2].equalsIgnoreCase("easy")))) {
                 displayBoard(board);
-                if (winCheck(board)) {
-                    break;
+                while (true) {
+                    int num = 1;
+                    if (parameter[1].equalsIgnoreCase("user")) {
+                        playerMove(board, num % 2 == 0 ? "O" : "X");
+                        ++num;
+                        if (winCheck(board)) {
+                            break;
+                        }
+                        if (fillCheck(board)) {
+                            System.out.println("Draw");
+                            break;
+                        }
+                    } else {
+                        System.out.println("Making move level \""+botMode+"\"");
+                        easyMove(board, num % 2 == 0 ? "O" : "X");
+                        ++num;
+                        if (winCheck(board)) {
+                            break;
+                        }
+                        if (fillCheck(board)) {
+                            System.out.println("Draw");
+                            break;
+                        }
+                    }
+                    if (parameter[2].equalsIgnoreCase("user")) {
+                        playerMove(board, num % 2 == 0 ? "O" : "X");
+                        ++num;
+                        if (winCheck(board)) {
+                            break;
+                        }
+                        if (fillCheck(board)) {
+                            System.out.println("Draw");
+                            break;
+                        }
+                    } else {
+                        System.out.println("Making move level \""+botMode+"\"");
+                        easyMove(board, num % 2 == 0 ? "O" : "X");
+                        ++num;
+                        if (winCheck(board)) {
+                            break;
+                        }
+                        if (fillCheck(board)) {
+                            System.out.println("Draw");
+                            break;
+                        }
+                    }
                 }
-                if (fillCheck(board)) {
-                    System.out.println("Draw");
-                    break;
-                }
-                easyMove(board);
-                System.out.println("Making move level \"" + botMode + "\"");
-                displayBoard(board);
-                if (winCheck(board)) {
-                    break;
-                }
-                if (fillCheck(board)) {
-                    System.out.println("Draw");
-                    break;
-                }
-            } catch (Exception e) {
-                System.out.println("You should enter numbers!");
-            } 
+            } else {
+                System.out.println("Bad parameters!");
+            }
         }
         
 
