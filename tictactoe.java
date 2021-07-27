@@ -1,6 +1,181 @@
 import java.util.*;
 
 public class tictactoe {
+    static void mediumMove (String matrix[][], String piece) {
+        int counter = 0;
+        int mark = 0;
+        boolean empty = false;
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the player is going to win horizontally and stops it
+            for (int j = 1; j < matrix.length - 1; j++) {
+                if (!matrix[i][j].equalsIgnoreCase(piece) && !matrix[i][j].equalsIgnoreCase(" ")) {
+                    counter++;
+                } else if (matrix[i][j].equalsIgnoreCase(" ")){
+                    mark = j;
+                    empty = true;
+                }
+            }
+            if (counter >= 2 && empty == true) {
+                matrix[i][mark] = piece;
+                displayBoard(matrix);
+                return;
+            }
+            counter = 0;
+            empty = false;
+        }
+
+        counter = 0;
+        mark = 0;
+        int rowLoop = 0;
+
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the player is going to win vertically and stops it
+            for (int j = 1; j < matrix.length - 1; j++) {
+                if (!matrix[j][i].equalsIgnoreCase(piece) && !matrix[j][i].equalsIgnoreCase(" ")) {
+                    counter++;
+                } else if (matrix[j][i].equalsIgnoreCase(" ")){
+                    rowLoop = j;
+                    mark = i;
+                    empty = true;
+                }
+            }
+            if (counter >= 2 && empty == true) {
+                matrix[rowLoop][mark] = piece;
+                displayBoard(matrix);
+                return;
+            }
+            counter = 0;
+            empty = false;
+        }
+
+        counter = 0;
+        empty = false;
+
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the player is going to win diagonally and stops it
+            if (!matrix[i][i].equalsIgnoreCase(piece) && !matrix[i][i].equalsIgnoreCase(" ")) {
+                counter++;
+            } else if (matrix[i][i].equalsIgnoreCase(" ")) {
+                empty = true;
+                mark = i;
+            }
+        }
+
+        if (counter >= 2 && empty == true) {
+            matrix[mark][mark] = piece;
+            displayBoard(matrix);
+            return;
+        }
+
+        counter = 0;
+        empty = false;
+
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the player is going to win diagonally and stops it
+            if (!matrix[i][4 - i].equalsIgnoreCase(piece) && !matrix[i][4 - i].equalsIgnoreCase(" ")) {
+                counter++;
+            } else if (matrix[i][4 - i].equalsIgnoreCase(" ")) {
+                empty = true;
+                mark = i;
+            }
+        }
+
+        if (counter >= 2 && empty == true) {
+            matrix[mark][4 - mark] = piece;
+            displayBoard(matrix);
+            return;
+        }
+
+        counter = 0;
+        empty = false;
+
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the bot is going to win horizontally and executes it
+            for (int j = 1; j < matrix.length - 1; j++) {
+                if (matrix[i][j].equalsIgnoreCase(piece) && !matrix[i][j].equalsIgnoreCase(" ")) {
+                    counter++;
+                } else if (matrix[i][j].equalsIgnoreCase(" ")){
+                    mark = j;
+                    empty = true;
+                }
+            }
+            if (counter >= 2 && empty == true) {
+                matrix[i][mark] = piece;
+                displayBoard(matrix);
+                return;
+            }
+            counter = 0;
+            empty = false;
+        }
+
+        counter = 0;
+        mark = 0;
+        rowLoop = 0;
+
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the bot is going to win vertically and executes it
+            for (int j = 1; j < matrix.length - 1; j++) {
+                if (matrix[j][i].equalsIgnoreCase(piece) && !matrix[j][i].equalsIgnoreCase(" ")) {
+                    counter++;
+                } else if (matrix[j][i].equalsIgnoreCase(" ")){
+                    rowLoop = j;
+                    mark = i;
+                    empty = true;
+                }
+            }
+            if (counter >= 2 && empty == true) {
+                matrix[rowLoop][mark] = piece;
+                displayBoard(matrix);
+                return;
+            }
+            counter = 0;
+            empty = false;
+        }
+
+        counter = 0;
+        empty = false;
+
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the bot is going to win diagonally and executes  it
+            if (matrix[i][i].equalsIgnoreCase(piece) && !matrix[i][i].equalsIgnoreCase(" ")) {
+                counter++;
+            } else if (matrix[i][i].equalsIgnoreCase(" ")) {
+                empty = true;
+                mark = i;
+            }
+        }
+
+        if (counter >= 2 && empty == true) {
+            matrix[mark][mark] = piece;
+            displayBoard(matrix);
+            return;
+        }
+
+        counter = 0;
+        empty = false;
+
+        for (int i = 1; i < matrix.length - 1; i++) { // loop for checking if the bot is going to win diagonally and executes  it
+            if (matrix[i][4 - i].equalsIgnoreCase(piece) && !matrix[i][4 - i].equalsIgnoreCase(" ")) {
+                counter++;
+            } else if (matrix[i][4 - i].equalsIgnoreCase(" ")) {
+                empty = true;
+                mark = i;
+            }
+        }
+
+        if (counter >= 2 && empty == true) {
+            matrix[mark][4 - mark] = piece;
+            displayBoard(matrix);
+            return;
+        }
+
+        while (true) {
+            Random random = new Random();
+            int row = random.nextInt(3) + 1;
+            int col = random.nextInt(3) + 1;
+            if (matrix[row][col] == " ") {
+                matrix[row][col] = piece;
+                displayBoard(matrix);
+                break;
+            }
+        }
+        
+
+    }
+
     static void easyMove (String matrix[][], String piece) {
         while (true) {
             Random random = new Random();
@@ -123,17 +298,16 @@ public class tictactoe {
         }
     }
     public static void main(String[] args) {
-        Scanner coord = new Scanner(System.in);
-        String[][] board = {
-            {"-","-","-","-","-","-","-","-","-"},
-            {"|"," "," "," ","|"},
-            {"|"," "," "," ","|"},
-            {"|"," "," "," ","|"},
-            {"-","-","-","-","-","-","-","-","-"}
-        };
-        String botMode = "easy";
+        String[] goodParameter = {"easy", "user", "medium"};
 
         while (true) {
+            String[][] board = {
+                {"-","-","-","-","-","-","-","-","-"},
+                {"|"," "," "," ","|"},
+                {"|"," "," "," ","|"},
+                {"|"," "," "," ","|"},
+                {"-","-","-","-","-","-","-","-","-"}
+            };
             System.out.print("Input command: ");
             Scanner userInput = new Scanner(System.in);
             String[] parameter = userInput.nextLine().split(" ");
@@ -147,7 +321,7 @@ public class tictactoe {
                 continue;
             }
 
-            if (parameter[0].equalsIgnoreCase("start") && (parameter[1].equalsIgnoreCase("user") || parameter[1].equalsIgnoreCase("easy") && (parameter[2].equalsIgnoreCase("user") || parameter[2].equalsIgnoreCase("easy")))) {
+            if (parameter[0].equalsIgnoreCase("start") && (Arrays.asList(goodParameter).contains(parameter[1])) && (Arrays.asList(goodParameter).contains(parameter[2]))) {
                 displayBoard(board);
                 while (true) {
                     int num = 1;
@@ -161,9 +335,20 @@ public class tictactoe {
                             System.out.println("Draw");
                             break;
                         }
-                    } else {
-                        System.out.println("Making move level \""+botMode+"\"");
+                    } else if (parameter[1].equalsIgnoreCase("easy")){
+                        System.out.println("Making move level \"easy\"");
                         easyMove(board, num % 2 == 0 ? "O" : "X");
+                        ++num;
+                        if (winCheck(board)) {
+                            break;
+                        }
+                        if (fillCheck(board)) {
+                            System.out.println("Draw");
+                            break;
+                        }
+                    } else {
+                        System.out.println("Making move level \"medium\"");
+                        mediumMove(board, num % 2 == 0 ? "O" : "X");
                         ++num;
                         if (winCheck(board)) {
                             break;
@@ -183,9 +368,20 @@ public class tictactoe {
                             System.out.println("Draw");
                             break;
                         }
-                    } else {
-                        System.out.println("Making move level \""+botMode+"\"");
+                    } else if (parameter[2].equalsIgnoreCase("easy")){
+                        System.out.println("Making move level \"easy\"");
                         easyMove(board, num % 2 == 0 ? "O" : "X");
+                        ++num;
+                        if (winCheck(board)) {
+                            break;
+                        }
+                        if (fillCheck(board)) {
+                            System.out.println("Draw");
+                            break;
+                        }
+                    } else {
+                        System.out.println("Making move level \"medium\"");
+                        mediumMove(board, num % 2 == 0 ? "O" : "X");
                         ++num;
                         if (winCheck(board)) {
                             break;
