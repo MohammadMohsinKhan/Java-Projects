@@ -1,7 +1,5 @@
 import java.util.*;
-//up till line 52 in github done.
 public class tictactoe {
-   
     static void hardMove(String matrix[][], String piece) {
         int[][] moves = availableMoves(matrix);
         int[] bestMove = new int[2];
@@ -320,53 +318,41 @@ public class tictactoe {
     }
 
     static String winCheck(String matrix[][]) { // returns the winning piece
-        boolean X = false;
-        Boolean O = false;
-
-        for (int i = 1; i < matrix.length - 1; i++) {
+        for (int i = 1; i < matrix.length - 1; i++) { //checks if any piece won horizontally or vertically
             if (matrix[i][1].equalsIgnoreCase("X") && matrix[i][2].equalsIgnoreCase("X") && matrix[i][3].equalsIgnoreCase("X")) {
-                X = true;
                 return "X";
                 
             } else if (matrix[i][1].equalsIgnoreCase("O") && matrix[i][2].equalsIgnoreCase("O") && matrix[i][3].equalsIgnoreCase("O")) {
-                O = true;
                 return "O";
                 
             }
 
-            if (!X && !O) {
-                if (matrix[1][i].equalsIgnoreCase("X") && matrix[2][i].equalsIgnoreCase("X") && matrix[3][i].equalsIgnoreCase("X")) {
-                    X = true;
-                    return "X";
-                    
-                } else if (matrix[1][i].equalsIgnoreCase("O") && matrix[2][i].equalsIgnoreCase("O") && matrix[3][i].equalsIgnoreCase("O")) {
-                    O = true;
-                    return "O";
-                    
-                }
-            }
-        }
-
-        if (!X && !O) {
-                if (matrix[1][1].equalsIgnoreCase("X") && matrix[2][2].equalsIgnoreCase("X") && matrix[3][3].equalsIgnoreCase("X")) {
-                    X = true;
-                    return "X";
-                } else if (matrix[1][1].equalsIgnoreCase("O") && matrix[2][2].equalsIgnoreCase("O") && matrix[3][3].equalsIgnoreCase("O")) {
-                    O = true;
-                    return "O";
-                }
-        }
-
-        if (!X && !O) {
-            if (matrix[1][3].equalsIgnoreCase("X") && matrix[2][2].equalsIgnoreCase("X") && matrix[3][1].equalsIgnoreCase("X")) {
-                X = true;
+            
+            if (matrix[1][i].equalsIgnoreCase("X") && matrix[2][i].equalsIgnoreCase("X") && matrix[3][i].equalsIgnoreCase("X")) {
                 return "X";
-            } else if (matrix[1][3].equalsIgnoreCase("O") && matrix[2][2].equalsIgnoreCase("O") && matrix[3][1].equalsIgnoreCase("O")) {
-                O = true;
+                
+            } else if (matrix[1][i].equalsIgnoreCase("O") && matrix[2][i].equalsIgnoreCase("O") && matrix[3][i].equalsIgnoreCase("O")) {
                 return "O";
+                
             }
-        }   
+            
+        }
+
+        //checks if any piece won diagonally
+        if (matrix[1][1].equalsIgnoreCase("X") && matrix[2][2].equalsIgnoreCase("X") && matrix[3][3].equalsIgnoreCase("X")) {
+            return "X";
+        } else if (matrix[1][1].equalsIgnoreCase("O") && matrix[2][2].equalsIgnoreCase("O") && matrix[3][3].equalsIgnoreCase("O")) {
+            return "O";
+        }
+
+        //checks if any piece won diagonally 
+        if (matrix[1][3].equalsIgnoreCase("X") && matrix[2][2].equalsIgnoreCase("X") && matrix[3][1].equalsIgnoreCase("X")) {
+            return "X";
+        } else if (matrix[1][3].equalsIgnoreCase("O") && matrix[2][2].equalsIgnoreCase("O") && matrix[3][1].equalsIgnoreCase("O")) {
+            return "O";
+        }
         
+        //returns tie if the board is full
         if (fillCheck(matrix) == true) {
             return "tie";
         }
@@ -485,7 +471,7 @@ public class tictactoe {
                             System.out.println("Draw");
                             break;
                         }
-                    } else if (parameter[2].equalsIgnoreCase("medium")){
+                    } else if (parameter[2].equalsIgnoreCase("medium")) {
                         System.out.println("Making move level \"medium\"");
                         mediumMove(board, num % 2 == 0 ? "O" : "X");
                         ++num;
